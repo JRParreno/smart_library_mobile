@@ -3,4 +3,8 @@ import 'package:smart_libary_app/src/account/data/models/signup_response.dart';
 
 abstract class SignupRepository {
   Future<SignupResponse> signup(SignupModel signupModel);
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  });
 }

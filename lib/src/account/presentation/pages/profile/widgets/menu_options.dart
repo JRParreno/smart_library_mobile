@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
 import 'package:smart_libary_app/core/config/app_constant.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
@@ -10,9 +8,12 @@ import 'package:smart_libary_app/src/account/presentation/pages/profile/screens/
 class MenuOptions extends StatelessWidget {
   final BuildContext ctx;
   const MenuOptions({
-    super.key,
+    Key? key,
     required this.ctx,
-  });
+    required this.logout,
+  }) : super(key: key);
+
+  final VoidCallback logout;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class MenuOptions extends StatelessWidget {
                         child: const CustomText(text: 'Cancel'),
                       ),
                       TextButton(
-                        onPressed: () => {handleLogout(context)},
+                        onPressed: logout,
                         child: const CustomText(
                           text: 'OK',
                           style: TextStyle(
@@ -109,10 +110,5 @@ class MenuOptions extends StatelessWidget {
   void toNavigateScreen(
       {required BuildContext context, required String routeName}) {
     Navigator.of(context).pushNamed(routeName);
-  }
-
-  void handleLogout(BuildContext context) {
-    BlocProvider.of<ProfileBloc>(context).add(SetProfileLogoutEvent());
-    Navigator.pop(context);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_libary_app/core/local_storage/local_storage.dart';
 import 'package:smart_libary_app/src/account/data/models/signup_model.dart';
 import 'package:smart_libary_app/src/account/domain/repositories/signup_repository.dart';
 
@@ -20,11 +19,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
     try {
       final response = await repository.signup(event.signupModel);
-
-      await LocalStorage.storeLocalStorage(
-          '_token', response.data['access_token']);
-      await LocalStorage.storeLocalStorage(
-          '_refreshToken', response.data['refresh_token']);
+      await repository.saveTokens(
+          accessToken: response.data['access_token'],
+          refreshToken: response.data['refresh_token']);
 
       emit(SignupSuccess());
     } catch (e) {

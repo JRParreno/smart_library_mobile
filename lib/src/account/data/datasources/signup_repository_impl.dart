@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:smart_libary_app/core/config/app_constant.dart';
+import 'package:smart_libary_app/core/local_storage/local_storage.dart';
 import 'package:smart_libary_app/src/account/data/models/signup_model.dart';
 import 'package:smart_libary_app/src/account/data/models/signup_response.dart';
 import 'package:smart_libary_app/src/account/domain/repositories/signup_repository.dart';
@@ -40,5 +41,12 @@ class SignupRepositoryImpl extends SignupRepository {
 
       throw error;
     });
+  }
+
+  @override
+  Future<void> saveTokens(
+      {required String accessToken, required String refreshToken}) async {
+    await LocalStorage.storeLocalStorage('_token', accessToken);
+    await LocalStorage.storeLocalStorage('_refreshToken', refreshToken);
   }
 }

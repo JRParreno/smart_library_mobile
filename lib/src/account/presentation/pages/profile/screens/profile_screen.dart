@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
+import 'package:smart_libary_app/core/local_storage/local_storage.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/profile/widgets/menu_options.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -44,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const Gap(30),
               MenuOptions(
                 ctx: context,
+                logout: handleLogout,
               ),
             ],
           );
@@ -51,5 +53,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return const SizedBox();
       },
     );
+  }
+
+  void handleLogout() async {
+    await LocalStorage.deleteLocalStorage('_user');
+    await LocalStorage.deleteLocalStorage('_token');
+    await LocalStorage.deleteLocalStorage('_refreshToken');
+
+    if (mounted) {
+      BlocProvider.of<ProfileBloc>(context).add(SetProfileLogoutEvent());
+      Navigator.pop(context);
+    }
   }
 }
