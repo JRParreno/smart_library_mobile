@@ -6,7 +6,6 @@ import 'package:smart_libary_app/core/common_widget/common_widget.dart';
 
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
-import 'package:smart_libary_app/core/config/app_constant.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 
@@ -42,7 +41,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
       backgroundColor: ColorName.primary,
       appBar: buildAppBar(
         context: context,
-        title: book.title,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -59,7 +57,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Image.network(
-                  book.coverPhoto ?? AppConstant.defaultPhoto,
+                  book.coverPhoto,
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -78,35 +76,48 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     GalleryImage(
                       imageUrls: book.bookPhotos,
                       numOfShowImages: 3,
-                      titleGallery: 'Book Images',
+                      titleGallery: 'Book Gallery',
                     ),
                   ],
                 ),
               ],
-              const Gap(15),
+              const Gap(20),
               CustomText(
-                text: 'ISO: ${book.iso.toString()}',
-                style: textTheme.titleLarge,
+                text: book.title,
+                style: textTheme.displaySmall,
               ),
-              const Gap(15),
+              const Gap(5),
+              CustomText(
+                text: book.author,
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              const Gap(5),
+              Rate(
+                iconSize: 20,
+                color: Colors.green,
+                allowHalf: true,
+                allowClear: true,
+                initialValue: book.rate,
+                readOnly: true,
+                // onChange: (value) => print(value),
+              ),
+              const Gap(5),
               Row(
                 children: [
+                  const Icon(Icons.remove_red_eye),
+                  const Gap(5),
                   CustomText(
-                    text: 'Rating: ',
-                    style: textTheme.titleLarge,
-                  ),
-                  Rate(
-                    iconSize: 25,
-                    color: Colors.green,
-                    allowHalf: true,
-                    allowClear: true,
-                    initialValue: book.rate,
-                    readOnly: true,
-                    // onChange: (value) => print(value),
+                    text: book.viewCount.toString(),
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ],
               ),
-              const Gap(15),
+              const Divider(color: ColorName.placeHolder),
+              const Gap(10),
               CustomText(
                 text: 'Description',
                 style: textTheme.titleLarge,

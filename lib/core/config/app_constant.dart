@@ -21,10 +21,10 @@ class AppConstant {
   static const defaultPhoto =
       'https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg';
 
-  static const clientId = 'MQEPGFZCRrEofU2YoLoDMUwpimHhXvKftlHAxzkW';
+  static const clientId = 'RdDzD1LnFOltM34KjhSeJbPWbEYNw3VapkLjiTv2';
   static const clientSecret =
-      'y1GjQ49SK4PZ50zrzGrhE1e0SVAJXk8wDPPJJekLoMKaof9Q4cLrdEZ3dc6fqICY0JV6wzXZ4lTowJXIf77llHpYQzzQCLkeJLJ4zt6ySgKpGWbxr4UtcPwV2JAiH29f';
-  static const serverUrl = 'http://192.168.1.3:8000';
+      'Vlf9WqEYICJfsre5v9TtowQYC3RQRiL9r0QuZXGJlTWerCw9XQ9tPB5DCb57d8DYUPOx5ImGToDNJpdPzmJHsvPu23T7OlbEY4V4NqiKclLWgpV1Kebo9GJif5SQuVHw';
+  static const serverUrl = 'http://127.0.0.1:8000';
 
   // static const clientId = '9gw3LUTvRIFy3QWBnVf6pnIVQiuhECy3TIGICGjy';
 

@@ -1,35 +1,59 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:smart_libary_app/src/book/domain/entities/tag.dart';
+
 import 'package:smart_libary_app/src/department/domain/entities/department.dart';
 
 class Book extends Equatable {
   final int id;
   final Department department;
-  final String author;
   final String title;
-  final int year;
-  final double rate;
+  final String author;
+  final int popularity;
+  final String coverPhoto;
   final String description;
-  final String? coverPhoto;
-  final List<String> bookPhotos;
-  final int iso;
   final int numberCopies;
   final int viewCount;
+  final int year;
+  final List<Tag> tags;
+  final String isbnIssn;
+  final String ddcNumber;
+  final String editionStatement;
+  final String publisher;
+  final String generalInformation;
+  final String physicalDescription;
+  final String? imprint;
+  final String? controlNumber;
+  final String? callNumber;
+  final String? discipline;
+  final List<String> bookPhotos;
+  final double rate;
 
   const Book({
     required this.id,
     required this.department,
-    required this.author,
     required this.title,
-    required this.year,
-    required this.rate,
+    required this.author,
+    required this.popularity,
+    required this.coverPhoto,
     required this.description,
-    required this.iso,
     required this.numberCopies,
     required this.viewCount,
-    this.coverPhoto,
-    this.bookPhotos = const [],
+    required this.year,
+    required this.tags,
+    required this.isbnIssn,
+    required this.ddcNumber,
+    required this.editionStatement,
+    required this.publisher,
+    required this.generalInformation,
+    required this.physicalDescription,
+    this.rate = 0,
+    this.imprint,
+    this.controlNumber,
+    this.callNumber,
+    this.discipline,
+    required this.bookPhotos,
   });
 
   @override
@@ -37,16 +61,27 @@ class Book extends Equatable {
     return [
       id,
       department,
-      author,
       title,
-      year,
-      rate,
-      description,
+      author,
+      popularity,
       coverPhoto,
-      bookPhotos,
-      iso,
+      description,
+      numberCopies,
       viewCount,
-      numberCopies
+      year,
+      tags,
+      isbnIssn,
+      ddcNumber,
+      editionStatement,
+      publisher,
+      generalInformation,
+      physicalDescription,
+      imprint,
+      controlNumber,
+      callNumber,
+      discipline,
+      bookPhotos,
+      rate,
     ];
   }
 
@@ -57,12 +92,10 @@ class Book extends Equatable {
       author: 'Stephen Hawking',
       title: 'Calculus',
       year: 2008,
-      rate: 3.5,
       description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       coverPhoto:
           'https://media.springernature.com/full/springer-static/cover-hires/book/978-3-319-57354-0',
-      iso: 20917732,
       bookPhotos: [
         'https://media.springernature.com/full/springer-static/cover-hires/book/978-3-319-57354-0',
         'https://media.springernature.com/full/springer-static/cover-hires/book/978-3-319-57354-0',
@@ -72,56 +105,102 @@ class Book extends Equatable {
       ],
       numberCopies: -1,
       viewCount: -1,
+      ddcNumber: '123',
+      editionStatement: '1st edition',
+      generalInformation: 'gen info',
+      isbnIssn: '12',
+      physicalDescription: 'physical description',
+      popularity: 1,
+      publisher: 'publisher',
+      tags: [],
     );
   }
 
   Book copyWith({
     int? id,
     Department? department,
-    String? author,
     String? title,
-    int? year,
-    String? course,
-    double? rate,
-    String? description,
+    String? author,
+    int? popularity,
     String? coverPhoto,
-    List<String>? bookPhotos,
-    int? iso,
+    String? description,
     int? numberCopies,
     int? viewCount,
+    int? year,
+    List<Tag>? tags,
+    String? isbnIssn,
+    String? ddcNumber,
+    String? editionStatement,
+    String? publisher,
+    String? generalInformation,
+    String? physicalDescription,
+    String? imprint,
+    String? controlNumber,
+    String? callNumber,
+    String? discipline,
+    List<String>? bookPhotos,
+    double? rate,
   }) {
     return Book(
       id: id ?? this.id,
       department: department ?? this.department,
-      author: author ?? this.author,
       title: title ?? this.title,
-      year: year ?? this.year,
-      rate: rate ?? this.rate,
-      description: description ?? this.description,
+      author: author ?? this.author,
+      popularity: popularity ?? this.popularity,
       coverPhoto: coverPhoto ?? this.coverPhoto,
-      bookPhotos: bookPhotos ?? this.bookPhotos,
-      iso: iso ?? this.iso,
-      viewCount: viewCount ?? this.viewCount,
+      description: description ?? this.description,
       numberCopies: numberCopies ?? this.numberCopies,
+      viewCount: viewCount ?? this.viewCount,
+      year: year ?? this.year,
+      tags: tags ?? this.tags,
+      isbnIssn: isbnIssn ?? this.isbnIssn,
+      ddcNumber: ddcNumber ?? this.ddcNumber,
+      editionStatement: editionStatement ?? this.editionStatement,
+      publisher: publisher ?? this.publisher,
+      generalInformation: generalInformation ?? this.generalInformation,
+      physicalDescription: physicalDescription ?? this.physicalDescription,
+      imprint: imprint ?? this.imprint,
+      controlNumber: controlNumber ?? this.controlNumber,
+      callNumber: callNumber ?? this.callNumber,
+      discipline: discipline ?? this.discipline,
+      bookPhotos: bookPhotos ?? this.bookPhotos,
+      rate: rate ?? this.rate,
     );
   }
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
-      id: map['pk']?.toInt() ?? 0,
+      id: map['id']?.toInt() ?? 0,
       department: Department.fromMap(map['department']),
-      author: map['author'] ?? '',
       title: map['title'] ?? '',
-      year: map['year']?.toInt() ?? 0,
-      rate: map['rate']?.toDouble() ?? 0.0,
+      author: map['author'] ?? '',
+      popularity: map['popularity']?.toInt() ?? 0,
+      coverPhoto: map['cover_photo'] ?? '',
       description: map['description'] ?? '',
-      coverPhoto: map['cover_photo'],
-      bookPhotos: List<String>.from(map['book_photos']),
-      iso: map['iso']?.toInt() ?? 0,
-      viewCount: map['viewCount']?.toInt() ?? 0,
-      numberCopies: map['numberCopies']?.toInt() ?? 0,
+      numberCopies: map['number_copies']?.toInt() ?? 0,
+      viewCount: map['view_count']?.toInt() ?? 0,
+      year: map['year']?.toInt() ?? 0,
+      tags: List<Tag>.from(map['tags']?.map((x) => Tag.fromMap(x))),
+      isbnIssn: map['isbn_issn'] ?? '',
+      ddcNumber: map['ddc_number'] ?? '',
+      editionStatement: map['edition_statement'] ?? '',
+      publisher: map['publisher'] ?? '',
+      generalInformation: map['general_information'] ?? '',
+      physicalDescription: map['physical_description'] ?? '',
+      imprint: map['imprint'],
+      controlNumber: map['control_number'],
+      callNumber: map['call_number'],
+      discipline: map['discipline'],
+      bookPhotos: List<String>.from(
+        map['book_photos'],
+      ),
     );
   }
 
   factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'Book(id: $id, department: $department, title: $title, author: $author, popularity: $popularity, coverPhoto: $coverPhoto, description: $description, numberCopies: $numberCopies, viewCount: $viewCount, year: $year, tags: $tags, isbnIssn: $isbnIssn, ddcNumber: $ddcNumber, editionStatement: $editionStatement, publisher: $publisher, generalInformation: $generalInformation, physicalDescription: $physicalDescription, imprint: $imprint, controlNumber: $controlNumber, callNumber: $callNumber, discipline: $discipline, bookPhotos: $bookPhotos)';
+  }
 }

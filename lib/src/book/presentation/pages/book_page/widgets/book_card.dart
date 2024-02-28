@@ -34,8 +34,7 @@ class BookCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.network(
-                book.coverPhoto ??
-                    'https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg',
+                book.coverPhoto,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -58,7 +57,7 @@ class BookCard extends StatelessWidget {
                     ),
                     const Gap(5),
                     CustomText(
-                      text: 'ISO: ${book.iso}',
+                      text: 'ISO: ${book.isbnIssn}',
                       style: textTheme.labelMedium
                           ?.copyWith(color: ColorName.placeHolder),
                     ),
