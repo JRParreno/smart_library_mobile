@@ -38,12 +38,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
       // optional badges, length must be same with labels
       badges: const [
         null,
-        MotionBadgeWidget(
-          isIndicator: true,
-          color: Colors.red, // optional, default to Colors.red
-          size: 4, // optional, default to 5,
-          show: true, // true / false
-        ),
+        null,
         null,
         null,
         null,

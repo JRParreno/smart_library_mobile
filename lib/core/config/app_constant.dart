@@ -26,12 +26,12 @@ class AppConstant {
       'Vlf9WqEYICJfsre5v9TtowQYC3RQRiL9r0QuZXGJlTWerCw9XQ9tPB5DCb57d8DYUPOx5ImGToDNJpdPzmJHsvPu23T7OlbEY4V4NqiKclLWgpV1Kebo9GJif5SQuVHw';
   static const serverUrl = 'http://127.0.0.1:8000';
 
-  // static const clientId = '9gw3LUTvRIFy3QWBnVf6pnIVQiuhECy3TIGICGjy';
+  // static const clientId = 'ZsErPx2bxscqIWlYiltVKllA9oN7leOYza2WYuQs';
 
   // static const clientSecret =
-  //     'ZyqCGdPlPNyTxC3zDruFVv9O3Bhub77B1Gso5M5jcNUUjPuwwBzGU401c2fejF4nvAtcah6RZXC9JtKLOsPAzEN1Pwe7zqWs6vAHhFHlSP1KicX77FjnKjyNz0OYr0tj';
+  //     '6NItnrHWAevz2mfcxmx8f5mBHKpcS3zGIG77iKRxVdeB2RrqpbCHYu2ivyKh4MTHDyNQzBFOXfNJSQ9Zi2G0zU849Affvd8vT43Hbi4FXCZF6gaqF1gZKHPLowjWzLRt';
 
-  // static const serverUrl = 'https://app-bin-core.onrender.com';
+  // static const serverUrl = 'https://smart-library-core.onrender.com';
 
   static const apiUrl = '$serverUrl/api';
   static const apiUser = '$serverUrl/user';

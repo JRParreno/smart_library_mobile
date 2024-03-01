@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_libary_app/core/bloc/common/common_event.dart';
@@ -73,14 +72,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileLoaded(profile: response));
     } catch (e) {
       emit(ProfileError(errorMessage: e.toString()));
-    }
-  }
-
-  Future<void> registerFcmToken() async {
-    final token = await FirebaseMessaging.instance.getToken();
-
-    if (token != null) {
-      await repository.setPushToken(token).catchError((onError) {});
     }
   }
 }

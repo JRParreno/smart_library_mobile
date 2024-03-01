@@ -6,7 +6,6 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
 
   runApp(const SmartLibaryApp());
 }

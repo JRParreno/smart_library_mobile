@@ -35,13 +35,14 @@ class BookCard extends StatelessWidget {
             children: [
               Image.network(
                 book.coverPhoto,
-                height: 200,
+                height: MediaQuery.of(context).size.height * 0.2,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
               Padding(
                 padding: const EdgeInsets.all(7),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
@@ -51,13 +52,13 @@ class BookCard extends StatelessWidget {
                     ),
                     const Gap(5),
                     CustomText(
-                      text: 'Year: ${book.year}',
+                      text: book.author,
                       style: textTheme.labelMedium
                           ?.copyWith(color: ColorName.placeHolder),
                     ),
                     const Gap(5),
                     CustomText(
-                      text: 'ISO: ${book.isbnIssn}',
+                      text: 'Year: ${book.year}',
                       style: textTheme.labelMedium
                           ?.copyWith(color: ColorName.placeHolder),
                     ),

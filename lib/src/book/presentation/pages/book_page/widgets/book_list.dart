@@ -26,7 +26,7 @@ class BookList extends StatelessWidget {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 6 / 10.0,
+            childAspectRatio: 5.8 / 10.0,
             crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
             mainAxisSpacing: MediaQuery.of(context).size.width * 0.05,
           ),
