@@ -10,6 +10,7 @@ import 'package:smart_libary_app/src/account/presentation/pages/profile/screens/
 import 'package:smart_libary_app/src/account/presentation/pages/unauthorize/unauthorize_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/book_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_saved_page/book_saved_page.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/search_book_page/search_book_page.dart';
 import 'package:smart_libary_app/src/home/presentation/widgets/bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -74,9 +75,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   state is ProfileLoaded
                       ? const BookSavedPage()
                       : const UnauthorizePage(),
-                  MainPageContentComponent(
-                      title: "Saved Page",
-                      controller: _motionTabBarController!),
+                  const SearchBookPage(),
                   state is ProfileLoaded
                       ? const ProfileScreen()
                       : const UnauthorizePage(),

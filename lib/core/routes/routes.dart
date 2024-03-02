@@ -10,6 +10,7 @@ import 'package:smart_libary_app/src/account/presentation/pages/unauthorize/unau
 import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/book_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_saved_page/book_saved_page.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/search_book_page/search_book_page.dart';
 
 Route<dynamic>? generateRoute(RouteSettings settings) {
   return MaterialPageRoute(
@@ -41,6 +42,8 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
           return const ChangePasswordScreen();
         case UpdateAccountScreen.routeName:
           return const UpdateAccountScreen();
+        case SearchBookPage.routeName:
+          return const SearchBookPage();
 
         // case ColorScannerCamera.routeName:
         //   final args = settings.arguments! as ColorScannerCameraArgs;

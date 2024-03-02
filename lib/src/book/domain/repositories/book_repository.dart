@@ -4,4 +4,9 @@ abstract class BookRepository {
   Future<BookModel> getBooks({
     String? nextPage,
   });
+
+  Future<BookModel> getSearchBooks({
+    required String search,
+    String? nextPage,
+  });
 }

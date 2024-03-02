@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_libary_app/gen/colors.gen.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -18,7 +19,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: const Color(0xFF34343D),
+          border: Border.all(color: ColorName.primary),
           borderRadius: BorderRadius.circular(30)),
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -27,10 +28,10 @@ class CustomTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.search,
             size: 25,
-            color: const ColorScheme.dark().outline.withOpacity(0.5),
+            color: ColorName.primary,
           ),
           const SizedBox(
             width: 5,
@@ -50,9 +51,8 @@ class CustomTextField extends StatelessWidget {
                         isDense: true,
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
-                        hintStyle: TextStyle(
-                          color:
-                              const ColorScheme.dark().outline.withOpacity(0.5),
+                        hintStyle: const TextStyle(
+                          color: ColorName.placeHolder,
                         ),
                       ),
             ),

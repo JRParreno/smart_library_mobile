@@ -8,6 +8,7 @@ import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/widgets/more_details_section.dart';
 
 class BookDetailPageArgs {
   final Book book;
@@ -32,6 +33,7 @@ class BookDetailPage extends StatefulWidget {
 
 class _BookDetailPageState extends State<BookDetailPage> {
   late Book book = widget.args.book;
+  bool isShowInfo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +126,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
               const Gap(5),
               CustomText(text: book.description),
-              const Gap(30),
+              const Gap(5),
+              MoreDetailsSection(
+                book: book,
+                isShowInfo: isShowInfo,
+                onTapView: () {
+                  setState(() {
+                    isShowInfo = !isShowInfo;
+                  });
+                },
+              ),
+              const Gap(50),
             ],
           ),
         ),
