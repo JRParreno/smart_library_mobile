@@ -39,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    handleTest();
+    // handleTest();
     signupBloc = SignupBloc(SignupRepositoryImpl());
   }
 

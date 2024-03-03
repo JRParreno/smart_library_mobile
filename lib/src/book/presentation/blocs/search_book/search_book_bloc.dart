@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_libary_app/src/book/data/models/book_filter_model.dart';
 import 'package:smart_libary_app/src/book/data/models/book_model.dart';
 import 'package:smart_libary_app/src/book/domain/repositories/book_repository.dart';
 
@@ -21,6 +22,7 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
     try {
       final response = await repository.getSearchBooks(
         search: event.search,
+        filters: event.filters,
       );
 
       emit(

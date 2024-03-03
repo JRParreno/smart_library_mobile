@@ -8,6 +8,7 @@ import 'package:smart_libary_app/src/account/presentation/pages/profile/screens/
 import 'package:smart_libary_app/src/account/presentation/pages/signup/signup_page.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/unauthorize/unauthorize_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_filter_page/book_filter_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/book_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_saved_page/book_saved_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/search_book_page/search_book_page.dart';
@@ -44,6 +45,12 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
           return const UpdateAccountScreen();
         case SearchBookPage.routeName:
           return const SearchBookPage();
+        case BookFilterPage.routeName:
+          final args = settings.arguments! as BookFilterArgs;
+
+          return BookFilterPage(
+            args: args,
+          );
 
         // case ColorScannerCamera.routeName:
         //   final args = settings.arguments! as ColorScannerCameraArgs;

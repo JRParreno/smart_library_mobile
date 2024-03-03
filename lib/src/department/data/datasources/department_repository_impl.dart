@@ -7,7 +7,7 @@ import 'package:smart_libary_app/src/department/domain/repository/department_rep
 class DepartmentRepositoryImpl extends DepartmentRepository {
   @override
   Future<DepartmentModel> getDepartments() async {
-    String url = '${AppConstant.apiUrl}/department-list';
+    String url = '${AppConstant.apiUrl}/department-list?limit=30';
 
     return await ApiInterceptor.apiInstance()
         .get(

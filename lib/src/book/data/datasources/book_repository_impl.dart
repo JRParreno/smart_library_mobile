@@ -1,5 +1,6 @@
 import 'package:smart_libary_app/core/config/app_constant.dart';
 import 'package:smart_libary_app/core/interceptor/api_interceptor.dart';
+import 'package:smart_libary_app/src/book/data/models/book_filter_model.dart';
 import 'package:smart_libary_app/src/book/data/models/book_model.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 import 'package:smart_libary_app/src/book/domain/repositories/book_repository.dart';
@@ -31,9 +32,13 @@ class BookRepositoryImpl extends BookRepository {
   @override
   Future<BookModel> getSearchBooks({
     required String search,
+    required BookFilterModel filters,
     String? nextPage,
   }) async {
     String initialUrl = '';
+    String fields = '';
+    String values = '';
+    String departments = '';
 
     if (nextPage != null) {
       initialUrl = nextPage;
@@ -48,15 +53,48 @@ class BookRepositoryImpl extends BookRepository {
           'department__acronym=$search&department__name=$search';
       final tagsValues = 'tags__acronym=$search&tags__name=$search';
 
-      initialUrl =
-          '${AppConstant.apiUrl}/book-list?search_fields=title,author,isbn_issn,publisher,$tagsFields,$departmentFields';
+      if (filters.isAuthor) {
+        values += '&$authorValue';
+        fields += 'author,';
+      }
 
-      initialUrl += '&$authorValue';
-      initialUrl += '&$titleValue';
-      initialUrl += '&$isbnIssnValue';
-      initialUrl += '&$publisherValue';
-      initialUrl += '&$departmenValues';
-      initialUrl += '&$tagsValues';
+      if (filters.isDepartment) {
+        values += '&$departmenValues';
+        fields += '$departmentFields,';
+
+        if (filters.departments.isNotEmpty) {
+          final deptIds = filters.departments
+              .where((e) => e.isEnable)
+              .toList()
+              .map((e) => e.department.id.toString())
+              .join(',');
+
+          departments = '&departments=$deptIds';
+        }
+      }
+
+      if (filters.isIssnIsbn) {
+        values += '&$isbnIssnValue';
+        fields += 'isbn_issn,';
+      }
+
+      if (filters.isPublisher) {
+        values += '&$publisherValue';
+        fields += 'publisher,';
+      }
+
+      if (filters.isSubjects) {
+        values += '&$tagsValues';
+        fields += '$tagsFields,';
+      }
+
+      if (filters.isTitle) {
+        values += '&$titleValue';
+        fields += 'title,';
+      }
+
+      initialUrl =
+          '${AppConstant.apiUrl}/book-list?search_fields=$fields$values$departments';
     }
 
     String url = nextPage ?? initialUrl;
