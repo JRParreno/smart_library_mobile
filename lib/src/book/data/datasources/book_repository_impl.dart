@@ -117,4 +117,114 @@ class BookRepositoryImpl extends BookRepository {
       throw error!;
     });
   }
+
+  @override
+  Future<void> rateBook({required int rate, required int bookPk}) async {
+    String url = '${AppConstant.apiUrl}/book-rate/$rate';
+
+    final data = {
+      "rate": rate,
+      "book": bookPk,
+    };
+    return await ApiInterceptor.apiInstance()
+        .patch(url, data: data)
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<void> saveBook(int bookPk) async {
+    String url = '${AppConstant.apiUrl}/book-saved-create';
+
+    final data = {
+      "book": bookPk,
+    };
+
+    return await ApiInterceptor.apiInstance()
+        .post(url, data: data)
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<void> deleteSaveBook(int savePk) async {
+    String url = '${AppConstant.apiUrl}/book-saved-delete/$savePk';
+
+    return await ApiInterceptor.apiInstance()
+        .delete(
+          url,
+        )
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<void> viewCountEvent(int bookPk) async {
+    String url = '${AppConstant.apiUrl}/book-events-view-count';
+
+    final data = {
+      "book": bookPk,
+    };
+
+    return await ApiInterceptor.apiInstance()
+        .post(url, data: data)
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<Book> getDetailBook(int bookPk) async {
+    String url = '${AppConstant.apiUrl}/book-detail/$bookPk';
+
+    return await ApiInterceptor.apiInstance()
+        .get(
+      url,
+    )
+        .then((value) {
+      return Book.fromMap(value.data);
+    }).catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<BookModel> getSaveBook() async {
+    String url = '${AppConstant.apiUrl}/book-saved-list';
+
+    return await ApiInterceptor.apiInstance()
+        .get(
+      url,
+    )
+        .then((value) {
+      final results = value.data['results'] as List<dynamic>;
+
+      final books = results.map((e) => Book.fromMap(e)).toList();
+      return BookModel(
+          books: books,
+          nextPage: value.data['next'],
+          totalCount: value.data['count']);
+    }).catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
 }

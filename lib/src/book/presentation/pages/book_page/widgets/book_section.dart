@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
+import 'package:smart_libary_app/src/book/domain/entities/book.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list_loading.dart';
 import 'package:smart_libary_app/src/home/presentation/bloc/home_book/home_book_bloc.dart';
@@ -44,6 +46,8 @@ class BookSection extends StatelessWidget {
                     child: BookList(
                       books: state.bookModel.books,
                       isPaginate: state.isPaginate,
+                      onTapBook: (book) =>
+                          handleOnTapBook(book: book, context: context),
                     ),
                   );
                 }
@@ -52,6 +56,18 @@ class BookSection extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void handleOnTapBook({
+    required Book book,
+    required BuildContext context,
+  }) {
+    Navigator.of(context).pushNamed(
+      BookDetailPage.routeName,
+      arguments: BookDetailPageArgs(
+        book: book,
       ),
     );
   }

@@ -63,11 +63,40 @@ class BookCard extends StatelessWidget {
                           ?.copyWith(color: ColorName.placeHolder),
                     ),
                     const Gap(5),
-                    CustomText(
-                      text: 'Rate: ${book.rate}',
-                      style: textTheme.labelMedium
-                          ?.copyWith(color: ColorName.placeHolder),
-                    ),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              size: 14,
+                              color: ColorName.placeHolder,
+                            ),
+                            CustomText(
+                              text: book.totalRate.toString(),
+                              style: textTheme.labelMedium
+                                  ?.copyWith(color: ColorName.placeHolder),
+                            ),
+                          ],
+                        ),
+                        const Gap(10),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.remove_red_eye,
+                              size: 14,
+                              color: ColorName.placeHolder,
+                            ),
+                            const Gap(2),
+                            CustomText(
+                              text: book.viewCount.toString(),
+                              style: textTheme.labelMedium
+                                  ?.copyWith(color: ColorName.placeHolder),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
                   ],
                 ),
               )

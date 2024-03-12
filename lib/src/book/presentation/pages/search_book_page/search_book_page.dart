@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:smart_libary_app/core/common_widget/custom_text.dart';
 import 'package:smart_libary_app/core/widgets/custom_widgets.dart';
+import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_book/search_book_bloc.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_filter/search_filter_cubit.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_filter_page/book_filter_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list_loading.dart';
@@ -87,6 +89,7 @@ class _SearchBookPageState extends State<SearchBookPage> {
                   child: BookList(
                     books: state.bookModel.books,
                     isPaginate: state.isPaginate,
+                    onTapBook: (book) => handleOnTapBook(book),
                   ),
                 );
               }
@@ -108,5 +111,16 @@ class _SearchBookPageState extends State<SearchBookPage> {
         searchBookBloc.add(OnPaginateSearchBookEvent());
       }
     });
+  }
+
+  void handleOnTapBook(Book book) {
+    Navigator.of(context)
+        .pushNamed(
+          BookDetailPage.routeName,
+          arguments: BookDetailPageArgs(
+            book: book,
+          ),
+        )
+        .whenComplete(() => null);
   }
 }

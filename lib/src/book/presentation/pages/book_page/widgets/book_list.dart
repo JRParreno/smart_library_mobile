@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
-import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_card.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list_loading.dart';
 
@@ -11,10 +10,12 @@ class BookList extends StatelessWidget {
     Key? key,
     required this.books,
     this.isPaginate = false,
+    required this.onTapBook,
   }) : super(key: key);
 
   final List<Book> books;
   final bool isPaginate;
+  final Function(Book book) onTapBook;
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +36,7 @@ class BookList extends StatelessWidget {
             return Column(
               children: [
                 BookCard(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      BookDetailPage.routeName,
-                      arguments: BookDetailPageArgs(
-                        book: book,
-                      ),
-                    );
-                  },
+                  onTap: () => onTapBook(book),
                   book: book,
                 ),
               ],

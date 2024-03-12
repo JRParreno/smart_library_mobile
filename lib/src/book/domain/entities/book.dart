@@ -29,6 +29,11 @@ class Book extends Equatable {
   final String? discipline;
   final List<String> bookPhotos;
   final double rate;
+  final double totalRate;
+  final bool isRate;
+  final int? ratePk;
+  final bool isSave;
+  final int? savePk;
 
   const Book({
     required this.id,
@@ -48,12 +53,17 @@ class Book extends Equatable {
     required this.publisher,
     required this.generalInformation,
     required this.physicalDescription,
+    required this.bookPhotos,
+    this.totalRate = 0,
+    this.isRate = false,
+    this.isSave = false,
     this.rate = 0,
     this.imprint,
     this.controlNumber,
     this.callNumber,
     this.discipline,
-    required this.bookPhotos,
+    this.ratePk,
+    this.savePk,
   });
 
   @override
@@ -82,6 +92,11 @@ class Book extends Equatable {
       discipline,
       bookPhotos,
       rate,
+      isRate,
+      isSave,
+      ratePk,
+      totalRate,
+      savePk,
     ];
   }
 
@@ -140,6 +155,11 @@ class Book extends Equatable {
     String? discipline,
     List<String>? bookPhotos,
     double? rate,
+    bool? isRate,
+    bool? isSave,
+    int? ratePk,
+    double? totalRate,
+    int? savePk,
   }) {
     return Book(
       id: id ?? this.id,
@@ -165,12 +185,17 @@ class Book extends Equatable {
       discipline: discipline ?? this.discipline,
       bookPhotos: bookPhotos ?? this.bookPhotos,
       rate: rate ?? this.rate,
+      isRate: isRate ?? this.isRate,
+      isSave: isSave ?? this.isSave,
+      ratePk: ratePk ?? this.ratePk,
+      totalRate: totalRate ?? this.totalRate,
+      savePk: savePk ?? this.savePk,
     );
   }
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
-      id: map['id']?.toInt() ?? 0,
+      id: map['pk']?.toInt() ?? 0,
       department: Department.fromMap(map['department']),
       title: map['title'] ?? '',
       author: map['author'] ?? '',
@@ -191,6 +216,11 @@ class Book extends Equatable {
       controlNumber: map['control_number'],
       callNumber: map['call_number'],
       discipline: map['discipline'],
+      isRate: map['is_rate'],
+      isSave: map['is_save'],
+      ratePk: map['rate_pk'],
+      savePk: map['save_pk'],
+      totalRate: map['total_rate'],
       bookPhotos: List<String>.from(
         map['book_photos'],
       ),
@@ -198,9 +228,4 @@ class Book extends Equatable {
   }
 
   factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'Book(id: $id, department: $department, title: $title, author: $author, popularity: $popularity, coverPhoto: $coverPhoto, description: $description, numberCopies: $numberCopies, viewCount: $viewCount, year: $year, tags: $tags, isbnIssn: $isbnIssn, ddcNumber: $ddcNumber, editionStatement: $editionStatement, publisher: $publisher, generalInformation: $generalInformation, physicalDescription: $physicalDescription, imprint: $imprint, controlNumber: $controlNumber, callNumber: $callNumber, discipline: $discipline, bookPhotos: $bookPhotos)';
-  }
 }
