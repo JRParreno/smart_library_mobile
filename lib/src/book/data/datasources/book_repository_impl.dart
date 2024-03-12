@@ -227,4 +227,42 @@ class BookRepositoryImpl extends BookRepository {
       throw error!;
     });
   }
+
+  @override
+  Future<void> addRateBook({required int bookPk, required double rate}) async {
+    String url = '${AppConstant.apiUrl}/book-rate/';
+
+    final data = {
+      "book": bookPk,
+      "rate": rate,
+    };
+
+    return await ApiInterceptor.apiInstance()
+        .post(url, data: data)
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
+
+  @override
+  Future<void> updateRateBook(
+      {required int ratePk, required double rate}) async {
+    String url = '${AppConstant.apiUrl}/book-rate/$ratePk/';
+
+    final data = {
+      "rate": rate,
+    };
+
+    return await ApiInterceptor.apiInstance()
+        .patch(url, data: data)
+        .then((value) => null)
+        .catchError((error) {
+      throw error;
+    }).onError((error, stackTrace) {
+      throw error!;
+    });
+  }
 }

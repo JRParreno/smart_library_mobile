@@ -3,17 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:gap/gap.dart';
-import 'package:rate/rate.dart';
 import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
 
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
+import 'package:smart_libary_app/core/config/app_constant.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
+import 'package:smart_libary_app/src/account/presentation/pages/login/login_page.dart';
 import 'package:smart_libary_app/src/book/data/datasources/book_repository_impl.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/book_detail/book_detail_bloc.dart';
+import 'package:smart_libary_app/src/book/presentation/blocs/book_detail/rate/book_rate_cubit.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/widgets/custom_rate.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/widgets/more_details_section.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/widgets/rate_bottom_modal.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class BookDetailPageArgs {
   final Book book;
@@ -41,20 +47,27 @@ class _BookDetailPageState extends State<BookDetailPage> {
   bool isShowInfo = false;
   late BookDetailBloc bookDetailBloc;
   late ProfileBloc profileBloc;
+  late BookRateCubit bookRateCubit;
 
   @override
   void initState() {
     super.initState();
     bookDetailBloc = BookDetailBloc(BookRepositoryImpl());
     profileBloc = BlocProvider.of<ProfileBloc>(context);
+    bookRateCubit = BookRateCubit();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return BlocProvider(
-      create: (context) => bookDetailBloc..add(OnSetBookDetailEvent(book)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) =>
+                bookDetailBloc..add(OnSetBookDetailEvent(book))),
+        BlocProvider(create: (context) => bookRateCubit),
+      ],
       child: ProgressHUD(
         child: Builder(builder: (context) {
           final progressHUD = ProgressHUD.of(context);
@@ -70,6 +83,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               }
 
               if (state is BookDetailError) {
+                handleErrorMessage(state.errorMessage);
                 progressHUD?.dismiss();
               }
             },
@@ -92,9 +106,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     return CustomContainer(
                       child: BlocBuilder<BookDetailBloc, BookDetailState>(
                         builder: (context, state) {
-                          if (state is BookDetailError) {
-                            return CustomText(text: state.errorMessage);
-                          }
                           if (state is BookDetailLoaded) {
                             return SingleChildScrollView(
                               child: Column(
@@ -146,14 +157,36 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                     ),
                                   ),
                                   const Gap(5),
-                                  Rate(
-                                    iconSize: 20,
-                                    color: Colors.green,
-                                    allowHalf: true,
-                                    allowClear: true,
-                                    initialValue: state.book.rate,
-                                    readOnly: true,
-                                    // onChange: (value) => print(value),
+                                  Row(
+                                    children: [
+                                      if (!state.isLoading) ...[
+                                        CustomRate(
+                                          iconSize: 20,
+                                          color: Colors.green,
+                                          allowHalf: true,
+                                          allowClear: true,
+                                          initialValue: state.book.totalRate,
+                                          readOnly: true,
+                                          // onChange: (value) => print(value),
+                                        ),
+                                      ],
+                                      const Gap(5),
+                                      if (profileBloc.state
+                                          is ProfileLoaded) ...[
+                                        GestureDetector(
+                                          onTap: () =>
+                                              handleOnTapRate(state.book),
+                                          child: CustomText(
+                                            text: state.book.isRate
+                                                ? 'Edit Rate'
+                                                : 'Add Rate',
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: ColorName.placeHolder),
+                                          ),
+                                        ),
+                                      ]
+                                    ],
                                   ),
                                   const Gap(5),
                                   Row(
@@ -208,7 +241,57 @@ class _BookDetailPageState extends State<BookDetailPage> {
   void handleOnTapSaveBook() {
     if (profileBloc.state is ProfileLoaded) {
       bookDetailBloc.add(OnSaveBookEvent());
+      return;
     }
-    // handle user to login
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const CustomText(text: AppConstant.appName),
+        content: const Text('You need to login/signup to save this book.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const CustomText(text: 'Cancel'),
+          ),
+          TextButton(
+            onPressed: handleOnTapLogin,
+            child: const CustomText(
+              text: 'OK',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void handleOnTapLogin() {
+    Navigator.pop(context);
+
+    if (mounted) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.of(context).pushNamed(LoginPage.routeName);
+      });
+    }
+  }
+
+  void handleOnTapRate(Book currentBook) {
+    bookRateCubit.onSetInitialRate(currentBook.rate);
+    RateBottomModal.showModal(
+      context: context,
+      bookRateCubit: bookRateCubit,
+      bookDetailBloc: bookDetailBloc,
+    );
+  }
+
+  void handleErrorMessage(String errorMessage) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.error(
+        message: errorMessage,
+      ),
+    );
   }
 }

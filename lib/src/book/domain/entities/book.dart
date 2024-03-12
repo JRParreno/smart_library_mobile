@@ -224,6 +224,7 @@ class Book extends Equatable {
       bookPhotos: List<String>.from(
         map['book_photos'],
       ),
+      rate: map['rate']?.toDouble() ?? 0,
     );
   }
 

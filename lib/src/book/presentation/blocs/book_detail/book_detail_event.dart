@@ -17,7 +17,7 @@ class OnSetBookDetailEvent extends BookDetailEvent {
 }
 
 class OnRateBookEvent extends BookDetailEvent {
-  final int rate;
+  final double rate;
 
   const OnRateBookEvent(this.rate);
 

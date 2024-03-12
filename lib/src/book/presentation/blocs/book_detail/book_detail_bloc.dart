@@ -38,7 +38,32 @@ class BookDetailBloc extends Bloc<BookDetailEvent, BookDetailState> {
   }
 
   Future<void> onRateBookEvent(
-      OnRateBookEvent event, Emitter<BookDetailState> emit) async {}
+      OnRateBookEvent event, Emitter<BookDetailState> emit) async {
+    final state = this.state;
+
+    try {
+      if (state is BookDetailLoaded) {
+        final ratePk = state.book.ratePk;
+        final rate = event.rate;
+        emit(state.copyWith(isLoading: true));
+
+        if (ratePk != null) {
+          // Update current rate
+          await repository.updateRateBook(ratePk: ratePk, rate: rate);
+          emit(state.copyWith(book: state.book.copyWith(rate: rate)));
+        } else {
+          // Add rate
+          await repository.addRateBook(bookPk: state.book.id, rate: rate);
+        }
+
+        final response = await repository.getDetailBook(state.book.id);
+        emit(BookDetailLoaded(book: response, isLoading: false));
+      }
+    } catch (e) {
+      emit(const BookDetailError('Something went wrong please try again'));
+    }
+  }
+
   Future<void> onSaveBookEvent(
       OnSaveBookEvent event, Emitter<BookDetailState> emit) async {
     final state = this.state;

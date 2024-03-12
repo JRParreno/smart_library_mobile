@@ -27,4 +27,8 @@ abstract class BookRepository {
   Future<void> deleteSaveBook(int savePk);
 
   Future<void> viewCountEvent(int bookPk);
+
+  Future<void> addRateBook({required int bookPk, required double rate});
+
+  Future<void> updateRateBook({required int ratePk, required double rate});
 }
