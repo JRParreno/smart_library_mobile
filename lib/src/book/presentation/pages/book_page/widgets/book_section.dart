@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
+import 'package:smart_libary_app/gen/assets.gen.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_detail_page/book_detail_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/widgets/book_list.dart';
@@ -41,6 +42,10 @@ class BookSection extends StatelessWidget {
                       child: CustomText(text: 'Something went wrong'));
                 }
                 if (state is HomeBookLoaded) {
+                  if (state.bookModel.books.isEmpty) {
+                    return Assets.lottie.notFound.lottie();
+                  }
+
                   return SingleChildScrollView(
                     controller: scrollController,
                     child: BookList(

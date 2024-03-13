@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_libary_app/src/book/data/models/book_filter_model.dart';
 import 'package:smart_libary_app/src/book/data/models/book_model.dart';
 import 'package:smart_libary_app/src/book/domain/repositories/book_repository.dart';
 
@@ -12,6 +13,7 @@ class HomeBookBloc extends Bloc<HomeBookEvent, HomeBookState> {
   HomeBookBloc(this.repository) : super(HomeBookInitial()) {
     on<OnGetHomeBookEvent>(onGetHomeBookEvent);
     on<OnPaginateHoomBookEvent>(onPaginateHoomBookEvent);
+    on<OnFilterCategoriesBookEvent>(onFilterCategoriesBookEvent);
   }
 
   Future<void> onGetHomeBookEvent(
@@ -55,6 +57,26 @@ class HomeBookBloc extends Bloc<HomeBookEvent, HomeBookState> {
       } catch (e) {
         emit(HomeBookError(e.toString()));
       }
+    }
+  }
+
+  Future<void> onFilterCategoriesBookEvent(
+      OnFilterCategoriesBookEvent event, Emitter<HomeBookState> emit) async {
+    emit(HomeBookLoading());
+
+    try {
+      final response = await repository.getSearchBooks(
+        search: '',
+        filters: event.filters,
+      );
+
+      emit(
+        HomeBookLoaded(
+          bookModel: response,
+        ),
+      );
+    } catch (e) {
+      emit(HomeBookError(e.toString()));
     }
   }
 }

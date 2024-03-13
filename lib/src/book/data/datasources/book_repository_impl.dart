@@ -39,6 +39,7 @@ class BookRepositoryImpl extends BookRepository {
     String fields = '';
     String values = '';
     String departments = '';
+    String rate = '';
 
     if (nextPage != null) {
       initialUrl = nextPage;
@@ -93,8 +94,12 @@ class BookRepositoryImpl extends BookRepository {
         fields += 'title,';
       }
 
+      if (filters.rate > 0) {
+        rate = '&rate=${filters.rate.toString()}';
+      }
+
       initialUrl =
-          '${AppConstant.apiUrl}/book-list?search_fields=$fields$values$departments';
+          '${AppConstant.apiUrl}/book-list?search_fields=$fields$values$departments$rate';
     }
 
     String url = nextPage ?? initialUrl;

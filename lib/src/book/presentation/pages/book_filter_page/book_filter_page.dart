@@ -10,6 +10,7 @@ import 'package:smart_libary_app/src/book/data/models/book_filter_model.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_book/search_book_bloc.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_filter/search_filter_cubit.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_filter_page/widgets/filter_information.dart';
+import 'package:smart_libary_app/src/book/presentation/pages/book_filter_page/widgets/rate_filter.dart';
 
 class BookFilterArgs {
   final String search;
@@ -58,6 +59,21 @@ class _BookFilterPageState extends State<BookFilterPage> {
                 children: [
                   const FilterInformation(),
                   const Gap(20),
+                  RateFilter(
+                    rate: state.rate,
+                    onChange: (value) {
+                      setState(() {
+                        bookFilterModel = bookFilterModel.copyWith(
+                          rate: value,
+                        );
+                      });
+                    },
+                  ),
+                  const Divider(
+                    color: ColorName.primary,
+                    thickness: 0.5,
+                  ),
+                  const Gap(10),
                   const CustomText(
                     text: 'Include(s)',
                     style: TextStyle(
@@ -169,7 +185,8 @@ class _BookFilterPageState extends State<BookFilterPage> {
                               filters: bookFilterModel));
                       Navigator.of(context).pop();
                     },
-                  )
+                  ),
+                  const Gap(25),
                 ],
               ),
             );

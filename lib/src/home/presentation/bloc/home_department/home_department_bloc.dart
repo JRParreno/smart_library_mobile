@@ -14,6 +14,7 @@ class HomeDepartmentBloc
     this.repository,
   ) : super(HomeDepartmentInitial()) {
     on<OnGetHomeDepartmentEvent>(onGetHomeDepartmentEvent);
+    on<OnTapHomeDepartmentEvent>(onTapHomeDepartmentEvent);
   }
 
   Future<void> onGetHomeDepartmentEvent(
@@ -23,9 +24,18 @@ class HomeDepartmentBloc
     try {
       final response = await repository.getDepartments();
 
-      emit(HomeDepartmentLoaded(response));
+      emit(HomeDepartmentLoaded(departmentModel: response));
     } catch (e) {
       emit(HomeDepartmentError(e.toString()));
+    }
+  }
+
+  void onTapHomeDepartmentEvent(
+      OnTapHomeDepartmentEvent event, Emitter<HomeDepartmentState> emit) async {
+    final state = this.state;
+
+    if (state is HomeDepartmentLoaded) {
+      emit(state.copyWith(index: event.index));
     }
   }
 }

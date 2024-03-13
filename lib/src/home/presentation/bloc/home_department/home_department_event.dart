@@ -8,3 +8,12 @@ abstract class HomeDepartmentEvent extends Equatable {
 }
 
 class OnGetHomeDepartmentEvent extends HomeDepartmentEvent {}
+
+class OnTapHomeDepartmentEvent extends HomeDepartmentEvent {
+  final int index;
+
+  const OnTapHomeDepartmentEvent(this.index);
+
+  @override
+  List<Object> get props => [index];
+}

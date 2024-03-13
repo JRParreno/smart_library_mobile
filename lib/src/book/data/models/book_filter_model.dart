@@ -36,6 +36,7 @@ class BookFilterModel extends Equatable {
   final bool isSubjects;
   final bool isDepartment;
   final List<DepartmentFilterModel> departments;
+  final double rate;
 
   const BookFilterModel({
     required this.departments,
@@ -45,6 +46,7 @@ class BookFilterModel extends Equatable {
     this.isIssnIsbn = true,
     this.isSubjects = true,
     this.isDepartment = true,
+    this.rate = 5,
   });
 
   factory BookFilterModel.empty() {
@@ -59,6 +61,7 @@ class BookFilterModel extends Equatable {
     bool? isSubjects,
     bool? isDepartment,
     List<DepartmentFilterModel>? departments,
+    double? rate,
   }) {
     return BookFilterModel(
       isAuthor: isAuthor ?? this.isAuthor,
@@ -68,11 +71,12 @@ class BookFilterModel extends Equatable {
       isSubjects: isSubjects ?? this.isSubjects,
       isDepartment: isDepartment ?? this.isDepartment,
       departments: departments ?? this.departments,
+      rate: rate ?? this.rate,
     );
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       isAuthor,
       isTitle,
@@ -81,6 +85,7 @@ class BookFilterModel extends Equatable {
       isSubjects,
       isDepartment,
       departments,
+      rate,
     ];
   }
 }

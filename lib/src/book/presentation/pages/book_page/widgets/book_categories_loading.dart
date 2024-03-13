@@ -24,7 +24,11 @@ class BookCategoriesLoading extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     right: 10,
                   ),
-                  child: CommonBtnChop(title: 'Loading', onTap: () {}),
+                  child: CommonBtnChip(
+                    title: 'Loading',
+                    onTap: () {},
+                    enable: false,
+                  ),
                 ),
               ),
             );

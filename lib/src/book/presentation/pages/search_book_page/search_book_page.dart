@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:smart_libary_app/core/common_widget/custom_text.dart';
 import 'package:smart_libary_app/core/widgets/custom_widgets.dart';
+import 'package:smart_libary_app/gen/assets.gen.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_book/search_book_bloc.dart';
 import 'package:smart_libary_app/src/book/presentation/blocs/search_filter/search_filter_cubit.dart';
@@ -34,6 +35,13 @@ class _SearchBookPageState extends State<SearchBookPage> {
     searchFilterCubit = context.read<SearchFilterCubit>();
     searchFilterCubit.onGetCategories();
     handleEventScrollListener();
+
+    searchBookBloc.add(
+      OnGetSearchBookEvent(
+        search: '',
+        filters: searchFilterCubit.state,
+      ),
+    );
   }
 
   @override
@@ -79,9 +87,8 @@ class _SearchBookPageState extends State<SearchBookPage> {
               }
               if (state is SearchBookLoaded) {
                 if (state.bookModel.books.isEmpty) {
-                  return const Center(
-                    child: CustomText(
-                        text: 'Book not found, try different keyword'),
+                  return Center(
+                    child: Assets.lottie.notFound.lottie(),
                   );
                 }
                 return SingleChildScrollView(

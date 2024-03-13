@@ -10,3 +10,14 @@ abstract class HomeBookEvent extends Equatable {
 class OnGetHomeBookEvent extends HomeBookEvent {}
 
 class OnPaginateHoomBookEvent extends HomeBookEvent {}
+
+class OnFilterCategoriesBookEvent extends HomeBookEvent {
+  final BookFilterModel filters;
+
+  const OnFilterCategoriesBookEvent(this.filters);
+
+  @override
+  List<Object> get props => [
+        filters,
+      ];
+}
