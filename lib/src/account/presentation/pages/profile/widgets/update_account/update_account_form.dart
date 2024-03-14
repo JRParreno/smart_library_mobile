@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:smart_libary_app/core/common_widget/common_bottomsheet.dart';
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
+import 'package:smart_libary_app/src/account/presentation/pages/signup/widgets/gender_select_widget.dart';
 
 class UpdateAccountForm extends StatelessWidget {
   final TextEditingController emailCtrl;
   final TextEditingController lastNameCtrl;
   final TextEditingController firstNameCtrl;
+  final TextEditingController genderCtrl;
 
   final GlobalKey<FormState> formKey;
 
   final VoidCallback onSubmit;
+  final Function(String value) onSelectGender;
 
   const UpdateAccountForm({
     super.key,
@@ -17,6 +21,8 @@ class UpdateAccountForm extends StatelessWidget {
     required this.lastNameCtrl,
     required this.formKey,
     required this.onSubmit,
+    required this.genderCtrl,
+    required this.onSelectGender,
   });
 
   @override
@@ -51,6 +57,27 @@ class UpdateAccountForm extends StatelessWidget {
                 labelText: "Last Name",
                 padding: EdgeInsets.zero,
                 parametersValidate: 'required',
+              ),
+              const Divider(
+                height: 10,
+                color: Colors.transparent,
+              ),
+              CustomTextField(
+                textController: genderCtrl,
+                labelText: "Gender",
+                keyboardType: TextInputType.emailAddress,
+                padding: EdgeInsets.zero,
+                parametersValidate: 'required',
+                readOnly: true,
+                onTap: () => commonBottomSheetDialog(
+                  context: context,
+                  title: "Select Gender",
+                  container: GenderSelectWidget(
+                    onSelectGender: onSelectGender,
+                    selectedGender:
+                        genderCtrl.text.isNotEmpty ? genderCtrl.text : null,
+                  ),
+                ),
               ),
               const Divider(
                 height: 10,

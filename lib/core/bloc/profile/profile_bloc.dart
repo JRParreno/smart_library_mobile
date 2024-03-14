@@ -21,10 +21,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<SetProfileLogoutEvent>(_setProfileLogoutEvent);
     on<SetProfilePicture>(_setProfilePicture);
     on<OnGetProfileEvent>(_onGetProfileEvent);
+    on<OnUpdateProfileEvent>(_onUpdateProfileEvent);
   }
 
   void _initial(InitialEvent event, Emitter<ProfileState> emit) {
     return emit(const InitialState());
+  }
+
+  void _onUpdateProfileEvent(
+      OnUpdateProfileEvent event, Emitter<ProfileState> emit) async {
+    final state = this.state;
+
+    if (state is ProfileLoaded) {
+      try {
+        emit(state.copyWith(isLoading: true));
+
+        final response = await repository.updateProfile(
+          firstName: event.firstName,
+          lastName: event.lastName,
+          email: event.email,
+          gender: event.gender,
+        );
+
+        emit(state.copyWith(profile: response, isLoading: false));
+      } catch (e) {
+        emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+      }
+    }
   }
 
   Future<void> _setProfile(

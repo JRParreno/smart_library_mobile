@@ -9,38 +9,58 @@ abstract class ProfileState extends Equatable {
 
 class ProfileLoaded extends ProfileState {
   final Profile profile;
+  final bool isLoading;
+  final String? errorMessage;
 
   const ProfileLoaded({
     required this.profile,
+    this.isLoading = false,
+    this.errorMessage,
   });
 
-  ProfileLoaded copyWith({
-    Profile? profile,
-  }) {
-    return ProfileLoaded(
-      profile: profile ?? this.profile,
-    );
-  }
+  @override
+  List<Object?> get props => [
+        profile,
+        isLoading,
+        errorMessage,
+      ];
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'profile': profile.toMap(),
-    };
+    final result = <String, dynamic>{};
+
+    result.addAll({'profile': profile.toMap()});
+    result.addAll({'isLoading': isLoading});
+    if (errorMessage != null) {
+      result.addAll({'errorMessage': errorMessage});
+    }
+
+    return result;
   }
 
   factory ProfileLoaded.fromMap(Map<String, dynamic> map) {
     return ProfileLoaded(
-      profile: map['profile'],
+      profile: Profile.fromMap(map['profile']),
+      isLoading: map['isLoading'] ?? false,
+      errorMessage: map['errorMessage'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory ProfileLoaded.fromJson(String source) =>
-      ProfileLoaded.fromMap(json.decode(source) as Map<String, dynamic>);
+      ProfileLoaded.fromMap(json.decode(source));
 
-  @override
-  List<Object?> get props => [profile];
+  ProfileLoaded copyWith({
+    Profile? profile,
+    bool? isLoading,
+    String? errorMessage,
+  }) {
+    return ProfileLoaded(
+      profile: profile ?? this.profile,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }
 
 class ProfileLogout extends ProfileState {}
