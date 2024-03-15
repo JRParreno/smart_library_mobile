@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,10 +23,37 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<SetProfilePicture>(_setProfilePicture);
     on<OnGetProfileEvent>(_onGetProfileEvent);
     on<OnUpdateProfileEvent>(_onUpdateProfileEvent);
+    on<OnChangePasswordProfileEvent>(_onChangePasswordProfileEvent);
   }
 
   void _initial(InitialEvent event, Emitter<ProfileState> emit) {
     return emit(const InitialState());
+  }
+
+  void _onChangePasswordProfileEvent(
+      OnChangePasswordProfileEvent event, Emitter<ProfileState> emit) async {
+    final state = this.state;
+
+    if (state is ProfileLoaded) {
+      try {
+        emit(state.copyWith(isLoading: true));
+
+        await repository.changePassword(
+          newPassword: event.password,
+          oldPassword: event.oldPassword,
+        );
+
+        emit(state.copyWith(isLoading: false));
+      } catch (e) {
+        final DioException error = e as DioException;
+        if (error.response != null) {
+          final response = error.response!.data;
+
+          emit(state.copyWith(
+              isLoading: false, errorMessage: response['error_message']));
+        }
+      }
+    }
   }
 
   void _onUpdateProfileEvent(

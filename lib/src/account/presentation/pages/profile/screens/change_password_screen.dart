@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/profile/widgets/change_password/password_form.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   static const String routeName = 'change-password';
@@ -20,34 +25,93 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool _passwordVisible = true;
   bool _passwordConfirmVisible = true;
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorName.primary,
+      appBar: buildAppBar(context: context, title: "Change Password"),
+      body: CustomContainer(
+        padding: const EdgeInsets.all(20),
+        child: ProgressHUD(
+          child: Builder(builder: (context) {
+            final progressHUD = ProgressHUD.of(context);
+
+            return BlocConsumer<ProfileBloc, ProfileState>(
+              listener: (context, state) {
+                if (state is ProfileLoaded) {
+                  if (state.isLoading) {
+                    progressHUD?.show();
+                    return;
+                  }
+
+                  progressHUD?.dismiss();
+                  if (state.errorMessage == null) {
+                    handleSuccessMessage('Successfully change your password!');
+                    return;
+                  }
+                  handleErrorMessage(state.errorMessage ?? '');
+                }
+              },
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    PasswordForm(
+                      formKey: formKey,
+                      oldPasswordCtrl: oldPasswordCtrl,
+                      passwordConfirmCtrl: passwordConfirmCtrl,
+                      passwordCtrl: passwordCtrl,
+                      onSubmit: handleSubmit,
+                      confirmPasswordVisible: _passwordConfirmVisible,
+                      confirmSuffixIcon: GestureDetector(
+                        onTap: handleOnConfirmChangePassVisible,
+                        child: Icon(!_passwordConfirmVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                      passwordVisible: _passwordVisible,
+                      suffixIcon: GestureDetector(
+                        onTap: handleOnChangePassVisible,
+                        child: Icon(!_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    )
+                  ],
+                );
+              },
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  void handleErrorMessage(String message) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.error(
+        message: message,
+      ),
+    );
+  }
+
+  void handleSuccessMessage(String message) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.success(
+        message: message,
+      ),
+    );
+  }
+
   void handleSubmit() {
     if (formKey.currentState!.validate()) {
-      // EasyLoading.show();
-      // if (passwordConfirmCtrl.text == passwordCtrl.text) {
-      //   ProfileRepositoryImpl()
-      //       .changePassword(
-      //           oldPassword: oldPasswordCtrl.text,
-      //           newPassword: passwordCtrl.text)
-      //       .then((value) {
-      //     showDialogReport("Successfully change your password!");
-      //     passwordConfirmCtrl.text = "";
-      //     passwordCtrl.text = "";
-      //     oldPasswordCtrl.text = "";
-      //     formKey.currentState!.reset();
-      //   }).catchError((onError) {
-      //     EasyLoading.dismiss();
-      //     final DioException error = onError as DioException;
-      //     if (error.response != null) {
-      //       final response = error.response!.data;
-      //       showDialogReport(response['error_message']);
-      //     }
-      //   }).whenComplete(() {
-      //     EasyLoading.dismiss();
-      //   });
-      // } else {
-      //   EasyLoading.dismiss();
-      //   showDialogReport("Password and Confirm password doesn't match");
-      // }
+      context.read<ProfileBloc>().add(
+            OnChangePasswordProfileEvent(
+              password: passwordCtrl.value.text,
+              oldPassword: oldPasswordCtrl.value.text,
+            ),
+          );
     }
   }
 
@@ -61,41 +125,5 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     setState(() {
       _passwordVisible = !_passwordVisible;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorName.primary,
-      appBar: buildAppBar(context: context, title: "Change Password"),
-      body: CustomContainer(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            PasswordForm(
-              formKey: formKey,
-              oldPasswordCtrl: oldPasswordCtrl,
-              passwordConfirmCtrl: passwordConfirmCtrl,
-              passwordCtrl: passwordCtrl,
-              onSubmit: handleSubmit,
-              confirmPasswordVisible: _passwordConfirmVisible,
-              confirmSuffixIcon: GestureDetector(
-                onTap: handleOnConfirmChangePassVisible,
-                child: Icon(!_passwordConfirmVisible
-                    ? Icons.visibility
-                    : Icons.visibility_off),
-              ),
-              passwordVisible: _passwordVisible,
-              suffixIcon: GestureDetector(
-                onTap: handleOnChangePassVisible,
-                child: Icon(!_passwordVisible
-                    ? Icons.visibility
-                    : Icons.visibility_off),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

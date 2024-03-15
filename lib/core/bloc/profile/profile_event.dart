@@ -40,5 +40,22 @@ class OnUpdateProfileEvent extends ProfileEvent {
         firstName,
         lastName,
         email,
+        gender,
+      ];
+}
+
+class OnChangePasswordProfileEvent extends ProfileEvent {
+  final String oldPassword;
+  final String password;
+
+  const OnChangePasswordProfileEvent({
+    required this.oldPassword,
+    required this.password,
+  });
+
+  @override
+  List<Object?> get props => [
+        oldPassword,
+        password,
       ];
 }
