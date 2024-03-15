@@ -59,3 +59,14 @@ class OnChangePasswordProfileEvent extends ProfileEvent {
         password,
       ];
 }
+
+class OnChangePictureProfileEvent extends ProfileEvent {
+  final String path;
+
+  const OnChangePictureProfileEvent(this.path);
+
+  @override
+  List<Object?> get props => [
+        path,
+      ];
+}

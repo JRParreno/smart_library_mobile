@@ -47,23 +47,9 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
           return const SearchBookPage();
         case BookFilterPage.routeName:
           final args = settings.arguments! as BookFilterArgs;
-
           return BookFilterPage(
             args: args,
           );
-
-        // case ColorScannerCamera.routeName:
-        //   final args = settings.arguments! as ColorScannerCameraArgs;
-        //   return ColorScannerCamera(
-        //     args: args,
-        //   );
-        // case ColorScannerResult.routeName:
-        //   final args = settings.arguments! as ColorScannerResultArgs;
-        //   return ColorScannerResult(
-        //     args: args,
-        //   );
-        // case ColorScannerSelectionPage.routeName:
-        //   return const ColorScannerSelectionPage();
       }
 
       return const Scaffold(

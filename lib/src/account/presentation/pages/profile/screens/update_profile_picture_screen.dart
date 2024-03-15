@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
 import 'package:smart_libary_app/core/common_widget/common_widget.dart';
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class UpdateProfilePcitureScreen extends StatefulWidget {
   static const String routeName = 'update-profile-picture-screen';
@@ -30,47 +33,70 @@ class _UpdateProfilePcitureScreenState
 
           return Scaffold(
             appBar: buildAppBar(context: context, title: "Update Picture"),
-            body: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: CircleAvatar(
-                        backgroundImage: image != null
-                            ? Image.file(File(image!.path)).image
-                            : profile.profilePhoto != null
-                                ? NetworkImage(profile.profilePhoto!)
-                                : null,
-                        radius: 100,
-                        child: profile.profilePhoto != null
-                            ? null
-                            : const Icon(Icons.person, size: 50),
+            body: ProgressHUD(
+              child: Builder(builder: (context) {
+                final progressHUD = ProgressHUD.of(context);
+
+                return BlocConsumer<ProfileBloc, ProfileState>(
+                  listener: (context, state) {
+                    if (state is ProfileLoaded) {
+                      if (state.isLoading) {
+                        progressHUD?.show();
+                        return;
+                      }
+
+                      progressHUD?.dismiss();
+                      if (state.errorMessage == null) {
+                        handleSuccessMessage(
+                            'Successfully change your profile photo!');
+                        return;
+                      }
+                      handleErrorMessage(state.errorMessage ?? '');
+                    }
+                  },
+                  builder: (context, state) {
+                    return Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: image != null
+                                ? Image.file(File(image!.path))
+                                : profile.profilePhoto != null
+                                    ? Image(
+                                        image:
+                                            NetworkImage(profile.profilePhoto!))
+                                    : Image.network(
+                                        profile.profilePhoto ??
+                                            'https://media.istockphoto.com/id/1327592449/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=yqoos7g9jmufJhfkbQsk-mdhKEsih6Di4WZ66t_ib7I=',
+                                        fit: BoxFit.contain,
+                                      ),
+                          ),
+                          CustomBtn(
+                            label: "Choose from Gallery",
+                            backgroundColor: Colors.blue[400],
+                            onTap: () async {
+                              final ImagePicker picker = ImagePicker();
+                              final XFile? pickImage = await picker.pickImage(
+                                  source: ImageSource.gallery);
+                              setState(() {
+                                image = pickImage;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          CustomBtn(
+                            label: "Save",
+                            onTap: image != null ? handleSubmitPhoto : null,
+                          )
+                        ],
                       ),
-                    ),
-                  ),
-                  CustomBtn(
-                    label: "Choose from Gallery",
-                    backgroundColor: Colors.blue[400],
-                    onTap: () async {
-                      final ImagePicker picker = ImagePicker();
-                      final XFile? pickImage =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      setState(() {
-                        image = pickImage;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomBtn(
-                    label: "Save",
-                    onTap: image != null ? handleSubmitPhoto : null,
-                  )
-                ],
-              ),
+                    );
+                  },
+                );
+              }),
             ),
           );
         }
@@ -81,27 +107,28 @@ class _UpdateProfilePcitureScreenState
   }
 
   void handleSubmitPhoto() {
-    // final profile = ProfileUtils.userProfile(context);
+    if (image != null) {
+      context.read<ProfileBloc>().add(
+            OnChangePictureProfileEvent(image!.path),
+          );
+    }
+  }
 
-    // if (image != null && profile != null) {
-    //   EasyLoading.show();
+  void handleErrorMessage(String message) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.error(
+        message: message,
+      ),
+    );
+  }
 
-    //   ProfileRepositoryImpl()
-    //       .uploadPhoto(
-    //     pk: profile.profilePk,
-    //     imagePath: image!.path,
-    //   )
-    //       .then((value) async {
-    //     BlocProvider.of<ProfileBloc>(context).add(
-    //       SetProfilePicture(value),
-    //     );
-    //     showDialogReport("Successfully udpate your profile picture!");
-    //   }).catchError((onError) {
-    //     EasyLoading.dismiss();
-    //     showDialogReport("Something went wrong");
-    //   }).whenComplete(() {
-    //     EasyLoading.dismiss();
-    //   });
-    // }
+  void handleSuccessMessage(String message) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.success(
+        message: message,
+      ),
+    );
   }
 }

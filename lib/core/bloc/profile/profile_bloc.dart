@@ -24,10 +24,37 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<OnGetProfileEvent>(_onGetProfileEvent);
     on<OnUpdateProfileEvent>(_onUpdateProfileEvent);
     on<OnChangePasswordProfileEvent>(_onChangePasswordProfileEvent);
+    on<OnChangePictureProfileEvent>(_onChangePictureProfileEvent);
   }
 
   void _initial(InitialEvent event, Emitter<ProfileState> emit) {
     return emit(const InitialState());
+  }
+
+  void _onChangePictureProfileEvent(
+      OnChangePictureProfileEvent event, Emitter<ProfileState> emit) async {
+    final state = this.state;
+
+    if (state is ProfileLoaded) {
+      try {
+        emit(state.copyWith(isLoading: true));
+
+        final response = await repository.uploadPhoto(
+            imagePath: event.path, pk: state.profile.profilePk);
+
+        emit(state.copyWith(
+            profile: state.profile.copyWith(profilePhoto: response),
+            isLoading: false));
+      } catch (e) {
+        final DioException error = e as DioException;
+        if (error.response != null) {
+          final response = error.response!.data;
+
+          emit(state.copyWith(
+              isLoading: false, errorMessage: response['error_message']));
+        }
+      }
+    }
   }
 
   void _onChangePasswordProfileEvent(

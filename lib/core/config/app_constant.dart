@@ -24,7 +24,7 @@ class AppConstant {
   static const clientId = 'RdDzD1LnFOltM34KjhSeJbPWbEYNw3VapkLjiTv2';
   static const clientSecret =
       'Vlf9WqEYICJfsre5v9TtowQYC3RQRiL9r0QuZXGJlTWerCw9XQ9tPB5DCb57d8DYUPOx5ImGToDNJpdPzmJHsvPu23T7OlbEY4V4NqiKclLWgpV1Kebo9GJif5SQuVHw';
-  static const serverUrl = 'http://127.0.0.1:8000';
+  static const serverUrl = 'http://192.168.1.5:8000';
 
   // static const clientId = 'o46wPJBYRnLUNa44Qa3YxTmglbI44qM0K2R9cxAe';
 
