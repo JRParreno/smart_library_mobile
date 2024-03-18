@@ -6,6 +6,7 @@ import 'package:smart_libary_app/core/bloc/profile/profile_bloc.dart';
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
+import 'package:smart_libary_app/src/about/about_page.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/profile/screens/profile_screen.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/unauthorize/unauthorize_page.dart';
 import 'package:smart_libary_app/src/book/presentation/pages/book_page/book_page.dart';
@@ -79,9 +80,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   state is ProfileLoaded
                       ? const ProfileScreen()
                       : const UnauthorizePage(),
-                  MainPageContentComponent(
-                      title: "Settings Page",
-                      controller: _motionTabBarController!),
+                  const AboutPage(),
                 ],
               );
             },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_libary_app/src/about/about_page.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/forgot_password/forgot_password_page.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/login/login_page.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/profile/screens/change_password_screen.dart';
@@ -50,6 +51,8 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
           return BookFilterPage(
             args: args,
           );
+        case AboutPage.routeName:
+          return const AboutPage();
       }
 
       return const Scaffold(
