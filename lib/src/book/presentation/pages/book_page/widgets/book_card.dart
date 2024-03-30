@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:smart_libary_app/core/common_widget/custom_text.dart';
+import 'package:smart_libary_app/core/extensions/popularity_str.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
 import 'package:smart_libary_app/src/book/domain/entities/book.dart';
 
@@ -73,7 +75,7 @@ class BookCard extends StatelessWidget {
                               color: ColorName.placeHolder,
                             ),
                             CustomText(
-                              text: book.totalRate.toString(),
+                              text: book.totalRate.toStringAsFixed(2),
                               style: textTheme.labelMedium
                                   ?.copyWith(color: ColorName.placeHolder),
                             ),
@@ -83,13 +85,13 @@ class BookCard extends StatelessWidget {
                         Row(
                           children: [
                             const Icon(
-                              Icons.remove_red_eye,
+                              CupertinoIcons.flame_fill,
                               size: 14,
                               color: ColorName.placeHolder,
                             ),
                             const Gap(2),
                             CustomText(
-                              text: book.viewCount.toString(),
+                              text: book.popularity.toKMBGenerator(),
                               style: textTheme.labelMedium
                                   ?.copyWith(color: ColorName.placeHolder),
                             ),

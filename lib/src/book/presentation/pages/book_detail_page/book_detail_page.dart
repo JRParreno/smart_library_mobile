@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -9,6 +10,7 @@ import 'package:smart_libary_app/core/common_widget/common_widget.dart';
 import 'package:smart_libary_app/core/common_widget/custom_appbar.dart';
 import 'package:smart_libary_app/core/common_widget/custom_container.dart';
 import 'package:smart_libary_app/core/config/app_constant.dart';
+import 'package:smart_libary_app/core/extensions/popularity_str.dart';
 import 'package:smart_libary_app/gen/colors.gen.dart';
 import 'package:smart_libary_app/src/account/presentation/pages/login/login_page.dart';
 import 'package:smart_libary_app/src/book/data/datasources/book_repository_impl.dart';
@@ -191,10 +193,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                   const Gap(5),
                                   Row(
                                     children: [
-                                      const Icon(Icons.remove_red_eye),
+                                      const Icon(CupertinoIcons.flame_fill),
                                       const Gap(5),
                                       CustomText(
-                                        text: state.book.viewCount.toString(),
+                                        text: state.book.popularity
+                                            .toKMBGenerator(),
                                         style: textTheme.titleMedium?.copyWith(
                                           fontWeight: FontWeight.normal,
                                         ),
