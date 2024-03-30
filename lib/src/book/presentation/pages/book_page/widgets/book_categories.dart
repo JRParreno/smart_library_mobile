@@ -91,6 +91,8 @@ class BookCategories extends StatelessWidget {
 
                       final departments = DepartmentFilterModel(department: e);
                       final filters = BookFilterModel(
+                        yearLevels: const [],
+                        semesters: const [],
                         departments: [departments],
                         isAuthor: false,
                         isIssnIsbn: false,

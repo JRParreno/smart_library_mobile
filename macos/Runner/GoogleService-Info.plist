@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.thesis.smartLibaryApp.RunnerTests</string>
+	<string>com.thesis.smartLibraryApp.RunnerTests</string>
 	<key>PROJECT_ID</key>
 	<string>smart-libary-app</string>
 	<key>STORAGE_BUCKET</key>

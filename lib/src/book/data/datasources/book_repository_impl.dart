@@ -40,6 +40,8 @@ class BookRepositoryImpl extends BookRepository {
     String values = '';
     String departments = '';
     String rate = '';
+    String semesters = '';
+    String yearLevels = '';
 
     if (nextPage != null) {
       initialUrl = nextPage;
@@ -52,6 +54,7 @@ class BookRepositoryImpl extends BookRepository {
       final publisherValue = 'publisher=$search';
       final departmenValues =
           'department__acronym=$search&department__name=$search';
+
       final tagsValues = 'tags__acronym=$search&tags__name=$search';
 
       if (filters.isAuthor) {
@@ -59,7 +62,7 @@ class BookRepositoryImpl extends BookRepository {
         fields += 'author,';
       }
 
-      if (filters.isDepartment) {
+      if (filters.departments.where((element) => element.isEnable).isNotEmpty) {
         values += '&$departmenValues';
         fields += '$departmentFields,';
 
@@ -71,6 +74,30 @@ class BookRepositoryImpl extends BookRepository {
               .join(',');
 
           departments = '&departments=$deptIds';
+        }
+      }
+
+      if (filters.semesters.where((element) => element.isEnable).isNotEmpty) {
+        if (filters.semesters.isNotEmpty) {
+          final semValues = filters.semesters
+              .where((e) => e.isEnable)
+              .toList()
+              .map((e) => e.value)
+              .join(',');
+
+          semesters = '&semesters=$semValues';
+        }
+      }
+
+      if (filters.yearLevels.where((element) => element.isEnable).isNotEmpty) {
+        if (filters.yearLevels.isNotEmpty) {
+          final yearValues = filters.yearLevels
+              .where((e) => e.isEnable)
+              .toList()
+              .map((e) => e.value)
+              .join(',');
+
+          yearLevels = '&year_levels=$yearValues';
         }
       }
 
@@ -94,12 +121,12 @@ class BookRepositoryImpl extends BookRepository {
         fields += 'title,';
       }
 
-      if (filters.rate > 0) {
+      if (filters.rate > -1) {
         rate = '&rate=${filters.rate.toString()}';
       }
 
       initialUrl =
-          '${AppConstant.apiUrl}/book-list?search_fields=$fields$values$departments$rate';
+          '${AppConstant.apiUrl}/book-list?search_fields=$fields$values$departments$rate$semesters$yearLevels';
     }
 
     String url = nextPage ?? initialUrl;

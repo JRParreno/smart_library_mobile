@@ -30,7 +30,7 @@ class FilterInformation extends StatelessWidget {
               Expanded(
                 child: CustomText(
                   text:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
+                      'Customize your book search by selecting criteria down below to help refine your book search.',
                 ),
               )
             ],

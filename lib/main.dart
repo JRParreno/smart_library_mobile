@@ -7,5 +7,5 @@ void main() {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const SmartLibaryApp());
+  runApp(const SmartLibraryApp());
 }

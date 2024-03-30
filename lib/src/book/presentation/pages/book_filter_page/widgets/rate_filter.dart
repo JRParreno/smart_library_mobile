@@ -8,10 +8,12 @@ class RateFilter extends StatelessWidget {
     Key? key,
     required this.rate,
     required this.onChange,
+    required this.isShow,
   }) : super(key: key);
 
   final double rate;
   final Function(double value) onChange;
+  final bool isShow;
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,22 @@ class RateFilter extends StatelessWidget {
             color: ColorName.placeHolder,
           ),
         ),
-        Rate(
-          initialValue: rate,
-          onChange: (value) {
-            onChange(value);
-          },
-          allowHalf: false,
-          allowClear: true,
-          color: ColorName.primary,
-          iconSize: 35,
-        ),
+        if (isShow) ...[
+          Rate(
+            initialValue: rate,
+            onChange: (value) {
+              onChange(value);
+            },
+            allowHalf: false,
+            allowClear: true,
+            color: ColorName.primary,
+            iconSize: 35,
+          ),
+        ] else ...[
+          const CircularProgressIndicator(
+            strokeWidth: 0.5,
+          )
+        ]
       ],
     );
   }

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:smart_libary_app/src/book/data/models/semester_model.dart';
+import 'package:smart_libary_app/src/book/data/models/year_level_model.dart';
 import 'package:smart_libary_app/src/department/domain/entities/department.dart';
 
 class DepartmentFilterModel extends Equatable {
@@ -34,23 +36,41 @@ class BookFilterModel extends Equatable {
   final bool isPublisher;
   final bool isIssnIsbn;
   final bool isSubjects;
-  final bool isDepartment;
   final List<DepartmentFilterModel> departments;
   final double rate;
+  final List<YearLevelModel> yearLevels;
+  final List<SemesterModel> semesters;
 
   const BookFilterModel({
     required this.departments,
+    required this.yearLevels,
+    required this.semesters,
     this.isAuthor = true,
     this.isTitle = true,
     this.isPublisher = true,
     this.isIssnIsbn = true,
     this.isSubjects = true,
-    this.isDepartment = true,
     this.rate = 5,
   });
 
   factory BookFilterModel.empty() {
-    return const BookFilterModel(departments: []);
+    const semesters = [
+      SemesterModel(semester: 'First Semester', value: 'FIRST_SEM'),
+      SemesterModel(semester: 'Second Semester', value: 'SECOND_SEM'),
+    ];
+
+    const yearLevels = [
+      YearLevelModel(yearLevel: '1st Year', value: 'FIRST_YEAR'),
+      YearLevelModel(yearLevel: '2nd Year', value: 'SECOND_YEAR'),
+      YearLevelModel(yearLevel: '3rd Year', value: 'THIRD_YEAR'),
+      YearLevelModel(yearLevel: '4th Year', value: 'FOURTH_YEAR'),
+    ];
+
+    return const BookFilterModel(
+      departments: [],
+      semesters: semesters,
+      yearLevels: yearLevels,
+    );
   }
 
   BookFilterModel copyWith({
@@ -59,9 +79,10 @@ class BookFilterModel extends Equatable {
     bool? isPublisher,
     bool? isIssnIsbn,
     bool? isSubjects,
-    bool? isDepartment,
     List<DepartmentFilterModel>? departments,
     double? rate,
+    List<YearLevelModel>? yearLevels,
+    List<SemesterModel>? semesters,
   }) {
     return BookFilterModel(
       isAuthor: isAuthor ?? this.isAuthor,
@@ -69,9 +90,10 @@ class BookFilterModel extends Equatable {
       isPublisher: isPublisher ?? this.isPublisher,
       isIssnIsbn: isIssnIsbn ?? this.isIssnIsbn,
       isSubjects: isSubjects ?? this.isSubjects,
-      isDepartment: isDepartment ?? this.isDepartment,
       departments: departments ?? this.departments,
       rate: rate ?? this.rate,
+      yearLevels: yearLevels ?? this.yearLevels,
+      semesters: semesters ?? this.semesters,
     );
   }
 
@@ -83,9 +105,10 @@ class BookFilterModel extends Equatable {
       isPublisher,
       isIssnIsbn,
       isSubjects,
-      isDepartment,
       departments,
       rate,
+      semesters,
+      yearLevels,
     ];
   }
 }

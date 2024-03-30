@@ -24,10 +24,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   MotionTabBarController? _motionTabBarController;
-  String appBarTitle = 'Smart Libary';
+  String appBarTitle = 'Smart Library';
 
   final labels = [
-    "Smart Libary",
+    "Smart Library",
     "Saved Books",
     "Search",
     "Profile",

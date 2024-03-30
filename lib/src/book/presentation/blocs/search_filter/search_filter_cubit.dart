@@ -25,11 +25,16 @@ class SearchFilterCubit extends Cubit<BookFilterModel> {
 
       return temp;
     }).toList();
-
     emit(state.copyWith(departments: filterDepartments));
   }
 
   void onApplyFilter(BookFilterModel filters) {
     emit(filters);
+  }
+
+  void onResetFilters() {
+    final departments =
+        state.departments.map((e) => e.copyWith(isEnable: true)).toList();
+    emit(BookFilterModel.empty().copyWith(departments: departments));
   }
 }

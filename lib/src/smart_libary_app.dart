@@ -12,15 +12,15 @@ import 'package:smart_libary_app/src/book/presentation/blocs/search_filter/searc
 import 'package:smart_libary_app/src/department/data/datasources/department_repository_impl.dart';
 import 'package:smart_libary_app/src/home/presentation/home.dart';
 
-class SmartLibaryApp extends StatefulWidget {
-  const SmartLibaryApp({super.key});
+class SmartLibraryApp extends StatefulWidget {
+  const SmartLibraryApp({super.key});
   static final navKey = GlobalKey<NavigatorState>();
 
   @override
-  State<SmartLibaryApp> createState() => _SmartLibaryAppState();
+  State<SmartLibraryApp> createState() => _SmartLibraryAppState();
 }
 
-class _SmartLibaryAppState extends State<SmartLibaryApp> {
+class _SmartLibraryAppState extends State<SmartLibraryApp> {
   bool isNeedOnBoarded = true;
   final ProfileBloc profileBloc = ProfileBloc(ProfileRepositoryImpl());
   final SearchFilterCubit searchFilterCubit =
@@ -59,7 +59,7 @@ class _SmartLibaryAppState extends State<SmartLibaryApp> {
         useInheritedMediaQuery: true,
         builder: ((context, child) {
           return MaterialApp(
-            navigatorKey: SmartLibaryApp.navKey,
+            navigatorKey: SmartLibraryApp.navKey,
             themeMode: ThemeMode.light,
             darkTheme: MaterialAppThemes.lightTheme,
             theme: MaterialAppThemes.lightTheme,
